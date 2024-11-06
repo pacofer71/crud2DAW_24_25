@@ -1,5 +1,7 @@
 <?php
 namespace App\Db;
+
+use App\Utils\Datos;
 use \PDO;
 use \PDOException;
 
@@ -24,6 +26,27 @@ class User extends Conexion{
             throw new PDOException("Error en crear: ".$ex->getMessage(), -1);
         }finally{
             parent::cerrarConexion();
+        }
+    }
+    //------------------------------------------------------------------------------------------
+    public static function crearRegistros(int $cant): void{
+        $faker = \Faker\Factory::create('es_ES');   
+        $faker->addProvider(new \Mmo\Faker\FakeimgProvider($faker));
+        for($i=0; $i<$cant; $i++){
+            $username=$faker->unique()->userName();
+            $texto=strtoupper(substr($username, 0, 2));
+            $email=$username."@".$faker->freeEmailDomain();
+            $perfil=$faker->randomElement(Datos::getPerfiles());
+            $imagen="img/".
+            $faker->fakeImg(dir: './../public/img', width:640, height: 480, fullPath: false, text: $texto, 
+            backgroundColor: \Mmo\Faker\FakeimgUtils::createColor(random_int(0, 255), random_int(0, 255), random_int(0, 255)));
+            (new User)
+            ->setUsername($username)
+            ->setEmail($email)
+            ->setPerfil($perfil)
+            ->setImagen($imagen)
+            ->create();
+
         }
     }
 
