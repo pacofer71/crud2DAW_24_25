@@ -39,8 +39,21 @@ class User extends Conexion{
             parent::cerrarConexion();
         }
         return $stmt->fetchAll(PDO::FETCH_CLASS, User::class);
-
-
+    }
+    public static function existeCampo(string $nombre, string $valor):bool{
+        $q="select count(*) as total from users where $nombre=:v";
+        $stmt=parent::getConexion()->prepare($q);
+        try{
+            $stmt->execute([
+                ':v'=>$valor
+            ]);
+        }catch(PDOException $ex){
+            throw new PDOException("Error en crear: ".$ex->getMessage(), -1);
+        }finally{
+            parent::cerrarConexion();
+        }
+        $filas=$stmt->fetchAll(PDO::FETCH_OBJ); //un array que puede estar o no vacio
+        return count($filas); // si devuelve cero
 
     }
     //------------------------------------------------------------------------------------------
