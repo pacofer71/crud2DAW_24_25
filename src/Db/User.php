@@ -28,11 +28,12 @@ class User extends Conexion{
             parent::cerrarConexion();
         }
     }
-    public static function read(): array{
-        $q="select * from users order by id desc";
+    //----------------------------------------------------------------------------------------------------
+    public static function read(int $id=null): array{
+        $q=($id===null) ? "select * from users order by id desc" : "select * from users where id=:i";
         $stmt=parent::getConexion()->prepare($q);
         try{
-            $stmt->execute();
+            ($id===null) ? $stmt->execute() : $stmt->execute([':i'=>$id]);
         }catch(PDOException $ex){
             throw new PDOException("Error en read: ".$ex->getMessage(), -1);
         }finally{
@@ -40,6 +41,7 @@ class User extends Conexion{
         }
         return $stmt->fetchAll(PDO::FETCH_CLASS, User::class);
     }
+    //-------------------------------------------------------------------------------------------------
     public static function existeCampo(string $nombre, string $valor):bool{
         $q="select count(*) as total from users where $nombre=:v";
         $stmt=parent::getConexion()->prepare($q);
@@ -52,8 +54,9 @@ class User extends Conexion{
         }finally{
             parent::cerrarConexion();
         }
-        $filas=$stmt->fetchAll(PDO::FETCH_OBJ); //un array que puede estar o no vacio
-        return count($filas); // si devuelve cero
+        
+        $filas=$stmt->fetchAll(PDO::FETCH_OBJ)[0]->total; //un array que puede estar o no vacio
+        return $filas; // si devuelve cero
 
     }
     //------------------------------------------------------------------------------------------

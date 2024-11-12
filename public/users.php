@@ -70,7 +70,7 @@ $usuarios = User::read();
                     <span class="font-bold $color">{$item->getPerfil()}</span>
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                    <a href="update.php?id={$item->getId()}"><i class="fas fa-edit text-xl hover:text-2xl"></i></a>
                 </td>
             </tr>
             TXT;
