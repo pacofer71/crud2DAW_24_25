@@ -31,8 +31,8 @@ class Validaciones{
         return true;
     }
 
-    public static function existeCampo(string $nonCamp, string $valCamp):bool{
-        if(User::existeCampo($nonCamp, $valCamp)){
+    public static function existeCampo(string $nonCamp, string $valCamp, ?int $id=null):bool{
+        if(User::existeCampo($nonCamp, $valCamp, $id)){
             $_SESSION["err_$nonCamp"]="*** Error el valor $valCamp ya está registrado";
             return true;
         }
