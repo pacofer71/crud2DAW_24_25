@@ -35,7 +35,7 @@ if (isset($_POST['username'])) {
     } {
         //si la longitud es correcta compruebo que no está duplicado
         if (Validaciones::existeCampo("username", $username, $id)) {
-            $errores = true;
+           $errores = true;
         }
     }
     if (!Validaciones::isEmailValido($email)) {
@@ -75,7 +75,7 @@ if (isset($_POST['username'])) {
         ->setImagen($imagen)
         ->update($id);
     //Vamops a borrar la imagen si el usuario ha subido una y todo ha ido bien
-    
+
     $imagenAntigua=$usuario[0]->getImagen();
     if($imagenAntigua!=$imagen){
         if(basename($imagenAntigua)!='rana.jpg'){

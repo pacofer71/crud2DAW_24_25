@@ -32,6 +32,18 @@ class User extends Conexion
         }
     }
     //------------------------------------------------------------------------------------------------------
+    public static function delete(int $id){
+        $q="delete from users where id=:i";
+        $stmt = parent::getConexion()->prepare($q);
+        try {
+            $stmt->execute([':i'=>$id]);
+        } catch (PDOException $ex) {
+            throw new PDOException("Error en borrar: " . $ex->getMessage(), -1);
+        } finally {
+            parent::cerrarConexion();
+        }
+    }
+    //------------------------------------------------------------------------------------------------------
     public function update(int $id)
     {
         $q = "update users set username=:u, email=:e, imagen=:i, perfil=:p where id=:id";
